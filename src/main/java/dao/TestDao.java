@@ -1,0 +1,129 @@
+package dao;
+
+import java.sql.SQLException;
+import java.util.*;
+import database.DbConnection;
+
+public class TestDao {
+	
+	public static ArrayList<Test> getAllTests() throws Exception{
+		
+		ArrayList<Test> arr = new ArrayList<>();
+		String query = "SELECT * FROM test";
+		
+		try(DbConnection db = new DbConnection()){
+			db.pstm = db.con.prepareStatement(query);
+			db.rs = db.pstm.executeQuery();
+
+			while (db.rs.next()) {
+                Test test = new Test();
+                test.setTestId(db.rs.getInt("test_id"));
+                test.setTestTag(db.rs.getString("test_tag"));
+                test.setNoOfQuestions(db.rs.getInt("questions"));
+                test.setNoOfCandidates(db.rs.getInt("candidates"));
+                test.setPassMarks(db.rs.getInt("pass_marks"));                
+                arr.add(test);
+            }
+			return arr;
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static ArrayList<Question> getAllQuestions(int test_id) throws Exception{
+		
+		ArrayList<Question> arr = new ArrayList<>();
+		String query = "SELECT * FROM questions WHERE test_id = "+test_id;
+		
+		try(DbConnection db = new DbConnection()){
+			db.pstm = db.con.prepareStatement(query);
+			db.rs = db.pstm.executeQuery();
+
+			while (db.rs.next()) {
+				Question q = new Question();
+				q.setTestId(test_id);
+				q.setQuesId(db.rs.getInt("ques_id"));
+				q.setQuesText(db.rs.getString("ques_text"));
+				q.setOption1(db.rs.getString("option1"));
+				q.setOption2(db.rs.getString("option2"));
+				q.setOption3(db.rs.getString("option3"));
+				q.setOption4(db.rs.getString("option4"));
+				arr.add(q);
+            }
+			return arr;
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}		
+	}
+	
+	public static boolean addNewTest(String test_tag, String questions, String pass_marks) {
+		String query = "INSERT INTO test (test_tag, questions, pass_marks, candidates) VALUES (?,?,?,0)";
+		try(DbConnection db = new DbConnection()){
+			db.pstm = db.con.prepareStatement(query);
+			db.pstm.setString(1, test_tag);
+			db.pstm.setString(2, questions);
+			db.pstm.setString(3, pass_marks);
+			int count = db.pstm.executeUpdate();
+	        return count > 0;
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static int getTestId() throws Exception {
+		
+		String query = "SELECT test_id FROM test";
+		try(DbConnection db = new DbConnection()){
+			db.pstm = db.con.prepareStatement(query);
+			db.rs = db.pstm.executeQuery();
+			int ans = -1;
+			while (db.rs.next()) ans = db.rs.getInt("test_id");
+			return ans;
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}		
+	}
+	
+	public static void deleteTest(String test_id) {
+		String query = "DELETE FROM test WHERE test_id = ?";
+		try(DbConnection db = new DbConnection()){
+			db.pstm = db.con.prepareStatement(query);
+			db.pstm.setString(1, test_id);
+			int count = db.pstm.executeUpdate();
+//	        return count > 0;
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void addNewQuestion(int test_id, String quesText, String option1, String option2, String option3,
+			String option4, int correctAnswer) {
+		
+		String query = "INSERT INTO questions (test_id, ques_text, option1, option2, option3, "
+				+ "option4, correct_answer) VALUES (?,?,?,?,?,?,?)";
+		try(DbConnection db = new DbConnection()){
+			db.pstm = db.con.prepareStatement(query);
+			db.pstm.setInt(1, test_id);
+			db.pstm.setString(2, quesText);
+			db.pstm.setString(3, option1);
+			db.pstm.setString(4, option2);
+			db.pstm.setString(5, option3);
+			db.pstm.setString(6, option4);
+			db.pstm.setInt(7, correctAnswer);
+			int count = db.pstm.executeUpdate();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}		
+	}
+	
+}
