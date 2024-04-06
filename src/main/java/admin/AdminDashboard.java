@@ -34,12 +34,6 @@ public class AdminDashboard extends HttpServlet {
 				
 			} catch (Exception e) {
 				e.printStackTrace();
-				
-//			 Optionally, you can set an error message to display to the user
-//	        request.setAttribute("errorMessage", "An error occurred while retrieving the tests. Please try again later.");
-				
-				// Forward the request to an error page to inform the user
-//	        request.getRequestDispatcher("/errorPage.jsp").forward(request, response);
 			}
 		}else {
 			response.sendRedirect("/TakeTest/adminPages/adminLogin.jsp?error=1");
@@ -48,7 +42,6 @@ public class AdminDashboard extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
