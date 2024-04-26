@@ -6,7 +6,7 @@ import database.DbConnection;
 
 public class UserDao {
 	
-	public int getUserId(String mobile, String password) {
+	public static int getUserId(String mobile, String password) {
 		
 		String query = "SELECT user_id FROM user WHERE mobile = ? AND password = ?";
 		try(DbConnection db = new DbConnection();){
@@ -23,15 +23,17 @@ public class UserDao {
 		}
 	}
 	
-	public String getUserName(String mobile, String password) {
+	public static String getUserName(String mobile) {
 		
-		String query = "SELECT name FROM user WHERE mobile = ? AND password = ?";
+		String query = "SELECT name FROM user WHERE mobile = ?";
 		try(DbConnection db = new DbConnection();){
 			db.pstm = db.con.prepareStatement(query);
 			db.pstm.setString(1, mobile);
-			db.pstm.setString(2, password);
+//			db.pstm.setString(2, password);
 			db.rs = db.pstm.executeQuery();
-			return db.rs.getString("name");
+			String ans = "";
+			while (db.rs.next()) ans = db.rs.getString("name");
+			return ans;
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -39,7 +41,7 @@ public class UserDao {
 		}
 	}
 
-	public boolean existsMobile(String mobile) {
+	public static boolean existsMobile(String mobile) {
 		
 		String query = "SELECT name FROM user WHERE mobile = ? ";
 		try(DbConnection db = new DbConnection();){
@@ -54,7 +56,7 @@ public class UserDao {
 		}
 	}
 
-	public boolean addUser(String name, String mobile, String password) {
+	public static boolean addUser(String name, String mobile, String password) {
 		String query = "INSERT INTO user (name, mobile, password) VALUES(?,?,?)";
 //		System.out.println(name + "  " + mobile + "  " + password);
 		try(DbConnection db = new DbConnection()){

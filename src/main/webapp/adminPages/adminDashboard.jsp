@@ -136,30 +136,43 @@
                         <td><%= test.getNoOfQuestions() %></td>
                         <td><%= test.getNoOfCandidates() %></td>
                         <td>
-                            <button class="btn" onclick="window.location.href='editTest?id=<%= test.getTestId() %>'">Edit</button>
-                         <!-- 
-                         	<a href="/TakeTest/DeleteTest?test_id=<%= test.getTestId() %>"> 
-                            <button class="logout-btn" id="deleteTestButton">Delete</button>   </a>
-                          -->   
-                            
-                            <button class="logout-btn" id="deleteTestButton" data-test-id="<%= test.getTestId() %>">Delete</button>
-                       
+                            <button class="btn" onclick="editTest(<%= test.getTestId() %>)">Edit</button>
+                            <button class = "logout-btn" id="deleteTestButton" onclick ="deleteTest(<%= test.getTestId() %>)" > Delete </button>
+
                         </td>
                     </tr>
         <%      }
             }
         %>
     </table>
-    
+</div>
+
+</body>
+
     <script>
-    document.querySelectorAll('.logout-btn').forEach(item => {
-        item.addEventListener('click', event => {
-            const testId = event.target.dataset.testId;
-            if (confirmTestDeletion()) {
-                window.location.href = "/TakeTest/DeleteTest?test_id=" + testId;
-            }
-        });
-    });
+    
+    function editTest(testId) {
+        
+        const form = document.createElement('form');
+        form.setAttribute('method', 'post');
+        form.setAttribute('action', '/TakeTest/EditTest');
+
+        const testIdInput = document.createElement('input');
+        testIdInput.setAttribute('type', 'hidden');
+        testIdInput.setAttribute('name', 'test_id');
+        testIdInput.setAttribute('value', testId);
+
+        form.appendChild(testIdInput);
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+
+    function deleteTest(testId){
+    	if (confirmTestDeletion()) {
+    	    window.location.href = "/TakeTest/DeleteTest?test_id=" + testId;
+        }
+    }
 
     function confirmTestDeletion() {
         return confirm("Are you sure you want to delete this test?");
@@ -168,8 +181,6 @@
     function confirmLogout(){
     	return confirm("Do you want to log out?");
     }
+    
     </script>
-</div>
-
-</body>
 </html>

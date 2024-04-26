@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title> Add new test </title>
+<title>Add new test</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -21,7 +21,7 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         padding: 20px;
         width: 400px;
-        margin: 20px; /* Decreased margin */
+        margin: 25px; /* Decreased margin */
     }
     
     h1 {
@@ -70,7 +70,7 @@
     }
     
     .dashboard-btn:hover {
-    	font-size: 17px;
+        font-size: 17px;
         background-color: #005f79;
     }
 </style>
@@ -79,33 +79,35 @@
     <div class="container">
         <h1>Add new test</h1>
         <form action="../AddTest" method="post">
-            <input type="text" name="test_tag" placeholder="Enter test tag" required>
-            <input type="number" name="questions" placeholder="Enter number of questions" required >
-            <input type="number" name="pass_marks" placeholder="Enter pass marks" required>
+            <label for="test_tag" style="font-size: 15px">Enter Test Tag</label>
+            <input type="text" id="test_tag" name="test_tag" placeholder="Test Tag (Max 20 characters)" required maxlength="20">
+            
+            <label for="questions" style="font-size: 15px; margin-top: 5px">Enter Number of Questions</label>
+            <input type="number" id="questions" name="questions" placeholder="Questions (Max 10 ques)" required max="10" min = "">
+            
+            <label for="pass_marks" style="font-size: 15px"; margin-top: 5px> Enter Pass Marks</label>
+            <input type="number" id="pass_marks" name="pass_marks" min="0" placeholder="Pass marks (considering 1 mark for each question)" required>
             <button type="submit">Add Test</button>
         </form>
-            <% 
-        String error = request.getParameter("error");
-    	String toprint = "";
-        if(error != null){
-        	if(error.equals("invalid_passing_marks")) toprint = "Pass marks should be between 0 and "+ request.getParameter("ques");
-        	else if(error.equals("try_again")) toprint = "Error.";
-        	else if(error.equals("invalid_ques")) toprint = "Invalid number of questions";
-        	
-    %>
-    	<p style="font-size:16px;"><%= toprint %>. Try again.</p>
-    <%
-        }
-    %>
-        <button class="dashboard-btn"  onclick="redirectToDashboard()">Back to Dashboard</button>
+        <% 
+            String error = request.getParameter("error");
+            String toprint = "";
+            if(error != null){
+                if(error.equals("invalid_passing_marks")) toprint = "Pass marks should be between 0 and "+ request.getParameter("ques");
+                else if(error.equals("try_again")) toprint = "Error.";
+                else if(error.equals("invalid_ques")) toprint = "Invalid number of questions";
+        %>
+        <p style="font-size:16px;"><%= toprint %>. Try again.</p>
+        <%
+            }
+        %>
+        <button class="dashboard-btn" onclick="redirectToDashboard()">Back to Dashboard</button>
     </div>
-    
 
-    
     <script>
-	  function redirectToDashboard() {
-	    window.location.href = '/TakeTest/AdminDashboard';
-	  }
-	</script>
+        function redirectToDashboard() {
+            window.location.href = '/TakeTest/AdminDashboard';
+        }
+    </script>
 </body>
 </html>

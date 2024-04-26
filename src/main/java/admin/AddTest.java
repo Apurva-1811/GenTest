@@ -27,10 +27,10 @@ public class AddTest extends HttpServlet {
 		String pass_marks = request.getParameter("pass_marks");
 		
 		try {
-			if(Integer.parseInt(questions) <= 0) {
-				response.sendRedirect("/TakeTest/adminPages/addTest.jsp?error=invalid_ques");
-                return;
-			}
+//			if(Integer.parseInt(questions) <= 0) {
+//				response.sendRedirect("/TakeTest/adminPages/addTest.jsp?error=invalid_ques");
+//                return;
+//			}
 			if (questions == null || pass_marks == null || Integer.parseInt(pass_marks) < 0 || Integer.parseInt(pass_marks) > Integer.parseInt(questions)) {
                 response.sendRedirect("/TakeTest/adminPages/addTest.jsp?error=invalid_passing_marks&ques="+questions);
                 return;

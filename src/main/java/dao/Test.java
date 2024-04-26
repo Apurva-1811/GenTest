@@ -8,10 +8,22 @@ public class Test {
     private int candidates;
     private int pass_marks;
     
-    // getters and setters
-    
-    public int getTestId() { return test_id; }
-    public void setTestId(int id) {this.test_id = id;}
+    // pojo: default and parameterised constructor
+    public Test() {
+		super();
+	}
+
+	public Test(int test_id, String test_tag, int questions, int candidates, int pass_marks) {
+		super();
+		this.test_id = test_id;
+		this.test_tag = test_tag;
+		this.questions = questions;
+		this.candidates = candidates;
+		this.pass_marks = pass_marks;
+	}
+
+	public int getTestId() { return test_id; }
+	public void setTestId(int id) {this.test_id = id;}
     
     public String getTestTag() { return test_tag; }
     public void setTestTag(String tag) {this.test_tag = tag;}

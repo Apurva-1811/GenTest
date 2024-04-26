@@ -15,7 +15,7 @@
     
     .container {
         max-width: 600px;
-        margin: 70px auto;
+        margin: 40px auto;
         background-color: #fff;
         padding: 20px;
         border-radius: 5px;
@@ -141,84 +141,123 @@
                        
     </div>
     
-    <script>
-        var currentQuestion = 0;
-        var questionForms = document.querySelectorAll('.questionForm');
-        var nextButton = document.getElementById('nextButton');
-        var prevButton = document.getElementById('prevButton');
-        var submitButton = document.getElementById('submitButton');
-        var goBackButton = document.getElementById('goBackButton');
-        var errorMsg = document.getElementById('errorMsg');
-        
-        // Function to show the current question and handle button states
-        function showQuestion() {
-            questionForms.forEach(function(form, index) {
-                if (index === currentQuestion) {
-                    form.classList.add('active');
-                } else {
-                    form.classList.remove('active');
-                }
-            });
-            if (currentQuestion === 0) {
-                prevButton.classList.add('hidden');
+<script>
+    var currentQuestion = 0;
+    var questionForms = document.querySelectorAll('.questionForm');
+    var nextButton = document.getElementById('nextButton');
+    var prevButton = document.getElementById('prevButton');
+    var submitButton = document.getElementById('submitButton');
+    var goBackButton = document.getElementById('goBackButton');
+    var errorMsg = document.getElementById('errorMsg');
+    
+    // Function to show the current question and handle button states
+    function showQuestion() {
+        questionForms.forEach(function(form, index) {
+            if (index === currentQuestion) {
+                form.classList.add('active');
             } else {
-                prevButton.classList.remove('hidden');
+                form.classList.remove('active');
             }
-            if (currentQuestion === questionForms.length - 1) {
-                submitButton.classList.remove('hidden');
-                nextButton.classList.add('hidden');
-            } else {
-                submitButton.classList.add('hidden');
-                nextButton.classList.remove('hidden');
+        });
+        if (currentQuestion === 0) {
+            prevButton.classList.add('hidden');
+        } else {
+            prevButton.classList.remove('hidden');
+        }
+        if (currentQuestion === questionForms.length - 1) {
+            submitButton.classList.remove('hidden');
+            nextButton.classList.add('hidden');
+        } else {
+            submitButton.classList.add('hidden');
+            nextButton.classList.remove('hidden');
+        }
+    }
+    
+    // Initial setup
+    showQuestion();
+    
+ // Event listener for the Next button
+    nextButton.addEventListener('click', function() {
+        var inputs = document.querySelectorAll('.questionForm.active input[type="text"], .questionForm.active input[type="number"]');
+        var isValid = true;
+        inputs.forEach(function(input) {
+            if (!input.value.trim()) {
+                isValid = false;
+            }
+        });
+        var correctAnswerInput = document.getElementById('correctAnswer' + (currentQuestion + 1));
+        if (correctAnswerInput) {
+            var correctAnswer = parseInt(correctAnswerInput.value);
+            if (isNaN(correctAnswer) || correctAnswer < 1 || correctAnswer > 4) {
+                isValid = false;
             }
         }
-        
-        // Initial setup
-        showQuestion();
-        
-        // Event listener for the Next button
-        nextButton.addEventListener('click', function() {
+        if (isValid) {
             currentQuestion++;
             showQuestion();
+            errorMsg.classList.add('hidden'); // Hide error message on next click
+        } else {
+            errorMsg.textContent = "Enter the valid correct option.";
+            errorMsg.classList.remove('hidden');
+        }
+    });
+
+    // Event listener for input fields to hide error message on change
+    var formInputs = document.querySelectorAll('.questionForm input[type="text"], .questionForm input[type="number"]');
+    formInputs.forEach(function(input) {
+        input.addEventListener('input', function() {
+            errorMsg.classList.add('hidden');
         });
-        
-        // Event listener for the Previous button
-        prevButton.addEventListener('click', function() {
-            currentQuestion--;
-            showQuestion();
-        });
-        
-        // Event listener for form submission
-        submitButton.addEventListener('click', function() {
-            var inputs = document.querySelectorAll('.questionForm.active input[type="text"], .questionForm.active input[type="number"]');
-            var isValid = true;
-            inputs.forEach(function(input) {
-                if (!input.value.trim()) {
-                    isValid = false;
-                }
-            });
-            if (!isValid) {
-                errorMsg.classList.remove('hidden');
-            } else {
-                errorMsg.classList.add('hidden');
-                // Uncomment the line below to submit the form
-                // document.getElementById('questionForm').submit();
+    });
+
+    
+    // Event listener for the Previous button
+    prevButton.addEventListener('click', function() {
+        currentQuestion--;
+        showQuestion();
+    });
+    
+    // Event listener for form submission
+    submitButton.addEventListener('click', function() {
+        var inputs = document.querySelectorAll('.questionForm.active input[type="text"], .questionForm.active input[type="number"]');
+        var isValid = true;
+        inputs.forEach(function(input) {
+            if (!input.value.trim()) {
+                isValid = false;
             }
         });
-        
-        document.querySelectorAll('.goBack').forEach(item => {
-            item.addEventListener('click', event => {
-                const testId = event.target.dataset.testId;
-                if (confirmGoBack()) {
-                    window.location.href = "/TakeTest/DeleteTest?test_id=" + testId;
-                }
-            });
-        });
-
-        function confirmGoBack() {
-            return confirm("Current test will not be added. Are you sure you want to go back?");
+        // Additional validation for correct answer
+        var correctAnswerInput = document.getElementById('correctAnswer' + (currentQuestion + 1));
+        if (correctAnswerInput) {
+            var correctAnswer = parseInt(correctAnswerInput.value);
+            if (isNaN(correctAnswer) || correctAnswer < 1 || correctAnswer > 4) {
+                isValid = false;
+            }
         }
-        
-    </script>
+        if (!isValid) {
+            errorMsg.textContent = "Invalid format on question number " + (currentQuestion + 1);
+            errorMsg.classList.remove('hidden');
+        } else {
+            errorMsg.classList.add('hidden');
+            // Uncomment the line below to submit the form
+             document.getElementById('questionForm').submit();
+        }
+    });
+    
+    document.querySelectorAll('.goBack').forEach(item => {
+        item.addEventListener('click', event => {
+            const testId = event.target.dataset.testId;
+            if (confirmGoBack()) {
+                window.location.href = "/TakeTest/DeleteTest?test_id=" + testId;
+            }
+        });
+    });
+
+    function confirmGoBack() {
+        return confirm("Current test will not be added. Are you sure you want to go back?");
+    }
+</script>
+
+
 </body>
 </html>

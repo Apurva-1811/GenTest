@@ -18,10 +18,10 @@
             <div class="row align-items-center justify-content-center">
                 <div class="col-md-7">
                     <h1>Login as <br><strong><span style="color: #F5B700; font-size: 4rem;">Admin</span></strong></h1>
-                    <form action="/TakeTest/AdminLogin" method="post">
+                    <form action="/TakeTest/AdminLogin" method="post" onsubmit="return validateForm()">
                         <div class="form-group first" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px; margin-bottom: 20px;">
                             <label for="username"><b>Enter your username</b></label>
-                            <input type="text" class="form-control" placeholder="Username" id="username" name="username" required style="border-radius: 5px;">
+                            <input type="text" class="form-control" placeholder="Username " id="username" name="username" required style="border-radius: 5px;">
                         </div>
                         <div class="form-group last mb-3" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px; margin-bottom: 20px;">
                             <label for="password"><b>Enter your password</b></label>
@@ -30,11 +30,12 @@
                         
                         <input type="submit" value="Log In" class="btn btn-block btn-warning">
                     </form>
+                    <p id="error" style="color: red;"></p>
                     <% 
                         String error = request.getParameter("error");
                         if(error != null && error.equals("1")){
                     %>
-                    <p>Invalid username or password. Try again</p>
+                    <p style="color: red;">Invalid username or password. Try again</p>
                     <%
                         }
                     %>
@@ -48,5 +49,18 @@
 <script src="AdminResources/js/popper.min.js"></script>
 <script src="AdminResources/js/bootstrap.min.js"></script>
 <script src="AdminResources/js/main.js"></script>
+
+<script>
+    function validateForm() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        if (username.length > 20) {
+            document.getElementById("error").innerHTML = "Username should not exceed 20 characters.";
+            return false;
+        }
+        return true;
+    }
+</script>
+
 </body>
 </html>

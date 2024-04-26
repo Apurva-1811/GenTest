@@ -5,10 +5,10 @@
 <head>
     <meta charset="UTF-8">
     <title>User Registration</title>
-	    <link rel="stylesheet" href="UserResources/fonts/icomoon/style.css">
-	    <link rel="stylesheet" href="UserResources/css/owl.carousel.min.css">
-	    <link rel="stylesheet" href="UserResources/css/bootstrap.min.css">
-	    <link rel="stylesheet" href="UserResources/css/newStyle.css">
+    <link rel="stylesheet" href="UserResources/fonts/icomoon/style.css">
+    <link rel="stylesheet" href="UserResources/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="UserResources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="UserResources/css/newStyle.css">
     <style>
         .btn-link {
             display: inline-block;
@@ -22,7 +22,7 @@
         }
 
         .btn-link:hover {
-        	color: black;
+            color: black;
             background-color: #f5b700;
             border: 1px solid #f5b700;
         }
@@ -47,30 +47,31 @@
             <div class="row align-items-center justify-content-center">
                 <div class="col-md-7">
                     <h1>Register as <br><strong><span style="color: #F5B700; font-size: 4rem;">User</span></strong></h1>
-                    <form action="/TakeTest/UserRegister" method="post">
+                    <form action="/TakeTest/UserRegister" method="post" onsubmit="return validateForm()">
                         <div class="form-group first" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;">
                             <label for="name"><b>Enter your username</b></label>
-                            <input type="text" class="form-control" placeholder="Username" required id="name" name="name" style="border-radius: 5px;" required>
+                            <input type="text" class="form-control" placeholder="Username (Max 20 characters)" required id="name" name="name" style="border-radius: 5px;" required maxlength="50">
                         </div>
                         <div class="form-group" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;">
                             <label for="mobile"><b>Enter your mobile number</b></label>
-                            <input type="tel" class="form-control" placeholder="Mobile" id="mobile" required name="mobile" style="border-radius: 5px;" required>
+                            <input type="tel" class="form-control" placeholder="Mobile (10 digits)" id="mobile" required name="mobile" style="border-radius: 5px;" required pattern="[0-9]{10}">
                         </div>
                         <div class="form-group last mb-3" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;">
                             <label for="password"><b>Enter your password</b></label>
-                            <input type="password" class="form-control" placeholder="Password" required id="password" name="password" style="border-radius: 5px;" required>
+                            <input type="password" class="form-control" placeholder="Password (Min 8 characters with at least 1 number)" required id="password" name="password" style="border-radius: 5px;" required minlength="8" pattern="(?=.*\d).{8,}" title="Password must be at least 8 characters long and contain at least one number">
                         </div>
-                        
+
                         <input type="submit" value="Register" class="btn btn-block btn-warning">
                     </form>
-                    <% 
+                    <p id="error" style="color: red;"></p>
+                    <%
                         String error = request.getParameter("error");
-                    	String toprint = "";
+                        String toprint = "";
                         if(error != null){
-                        	if(error.equals("need 10 digits")) toprint = "Mobile should have 10 digits.";
-                        	if(error.equals("mobile invalid")) toprint = "Invalid mobile number.";
-                        	if(error.equals("user_already_exists")) toprint = "Already registered with this mobile.";
-                        	
+                            if(error.equals("need 10 digits")) toprint = "Mobile should have 10 digits.";
+                            if(error.equals("mobile invalid")) toprint = "Invalid mobile number.";
+                            if(error.equals("user_already_exists")) toprint = "Already registered with this mobile.";
+
                     %>
                     <p><%= toprint %> Try again</p>
                     <%
@@ -90,6 +91,17 @@
 <script src="UserResources/js/popper.min.js"></script>
 <script src="UserResources/js/bootstrap.min.js"></script>
 <script src="UserResources/js/main.js"></script>
+
+<script>
+    function validateForm() {
+        var username = document.getElementById("name").value;
+        if (username.length > 20) {
+            document.getElementById("error").innerHTML = "Username should not exceed 20 characters.";
+            return false;
+        }
+        return true;
+    }
+</script>
 
 </body>
 </html>

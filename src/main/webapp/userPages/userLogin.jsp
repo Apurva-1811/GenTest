@@ -53,7 +53,7 @@
                     <form action="/TakeTest/UserLogin" method="post">
                         <div class="form-group first" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;">
                             <label for="mobile"><b>Enter your mobile</b></label>
-                            <input type="text" class="form-control" placeholder="Mobile" required id="mobile" name="mobile" style="border-radius: 5px;">
+                            <input type="text" class="form-control" placeholder="Mobile(10 digits)" required id="mobile" name="mobile" style="border-radius: 5px;" required pattern="[0-9]{10}">
                         </div>
                         <div class="form-group last mb-3" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;">
                             <label for="password"><b>Enter your password</b></label>
@@ -66,7 +66,7 @@
                         String error = request.getParameter("error");
                         if(error != null && error.equals("1")){
                     %>
-                    <p>Invalid mobile or password. Try again</p>
+                    <p style="color: red;">Invalid mobile or password. Try again</p>
                     <%
                         }
                     %>
