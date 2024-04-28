@@ -29,7 +29,6 @@ public class UserDao {
 		try(DbConnection db = new DbConnection();){
 			db.pstm = db.con.prepareStatement(query);
 			db.pstm.setString(1, mobile);
-//			db.pstm.setString(2, password);
 			db.rs = db.pstm.executeQuery();
 			String ans = "";
 			while (db.rs.next()) ans = db.rs.getString("name");
@@ -58,7 +57,6 @@ public class UserDao {
 
 	public static boolean addUser(String name, String mobile, String password) {
 		String query = "INSERT INTO user (name, mobile, password) VALUES(?,?,?)";
-//		System.out.println(name + "  " + mobile + "  " + password);
 		try(DbConnection db = new DbConnection()){
 			db.pstm = db.con.prepareStatement(query);
 			db.pstm.setString(1, name);

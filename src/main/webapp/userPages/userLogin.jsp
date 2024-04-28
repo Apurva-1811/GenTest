@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="UserResources/css/bootstrap.min.css">
     <link rel="stylesheet" href="UserResources/css/newStyle.css">
 
-    
     <style>
     	
         .btn-link {
@@ -31,7 +30,11 @@
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px !important; /* Reduced margin-bottom */
+        }
+
+        .form-group .form-control {
+            height: 30px; /* Reduced height */
         }
 
         .btn-link:focus, .btn-link:hover, .btn-link:active {
@@ -71,7 +74,7 @@
                         }
                     %>
                     <div class="text-center">
-                        <a href="/TakeTest/index.html" class="btn-link">Back to Home</a>
+                        <a href="/TakeTest/home.jsp" class="btn-link">Back to Home</a>
                         <a href="/TakeTest/userPages/userRegister.jsp" class="btn-link">Register Now</a>
                     </div>
                 </div>

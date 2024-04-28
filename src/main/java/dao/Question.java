@@ -2,7 +2,7 @@ package dao;
 
 public class Question {
 	
-    private int ques_id;
+	private int ques_id;
     private int test_id;
     private String ques_text;
     private String option1;
@@ -19,7 +19,7 @@ public class Question {
     public int getQuesId() { return ques_id; }
     public void setQuesId(int id) {this.ques_id = id;}
     
-    public int getCorrectAnswer() { return ques_id; }
+    public int getCorrectAnswer() { return correct_answer; }
     public void setCorrectAnswer(int val) {this.correct_answer = val;}
     
     public String getQuesText() {return ques_text;}

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, java.lang.*, dao.Question"%>
 <!DOCTYPE html>
 <html>
@@ -8,176 +8,196 @@
 <title>Live Test</title>
 <style>
 body {
-	font-family: Arial, sans-serif;
-	margin: 0;
-	margin-top: 50px;
-	padding: 0;
-	background-color: #f5f5f5;
-	display: flex;
-	justify-content: center;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    margin-top: 50px;
+    padding: 0;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
 }
 
 .container {
-	display: flex;
-	width: 95%;
-	height: 87vh;
-	background-color: #fff;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	border-radius: 5px;
-	overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    width: 95%;
+    height: 87vh;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
 }
 
 .question-section {
-	flex: 4;
-	padding: 20px;
-	font-size: 20px;
+    flex: 4;
+    padding: 20px;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .question-item {
-	margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .question-item h3 {
-	margin-top: 0;
-	color: #333;
+    margin-top: 0;
+    color: #333;
 }
 
 .options {
-	list-style-type: none;
-	padding: 0;
-	margin: 10px 0;
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0;
 }
 
 .options li {
-	margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 .options label {
-	display: flex;
-	align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .options input[type="radio"] {
-	margin-right: 10px;
+    margin-right: 10px;
+}
+
+.buttons-section {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
 
 button {
-	padding: 10px 20px;
-	background-color: #4CAF50;
-	color: white;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	transition: background-color 0.3s ease;
-	margin-right: 10px; /* Added margin between buttons */
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px; /* Added margin between buttons */
 }
 
 button:hover {
-	background-color: #3e8e41;
+    background-color: #3e8e41;
 }
 
 button:disabled {
-	background-color: #ccc;
-	cursor: not-allowed;
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 
 #submitButton {
-	background-color: #f44336;
+    background-color: #f44336;
 }
 
 #submitButton:hover {
-	background-color: #d32f2f;
+    background-color: #d32f2f;
 }
 
 .question-nav {
-	flex: 1;
-	background-color: #9a9a9a;
-	padding: 20px;
+    flex: 1;
+    background-color: #9a9a9a;
+    padding: 20px;
 }
 
 .question-nav ul {
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }
 
 .question-nav li {
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .question-nav a {
-	display: block;
-	padding: 10px;
-	background-color: #fff;
-	border-radius: 5px;
-	text-decoration: none;
-	color: #333;
-	transition: background-color 0.3s ease;
+    display: block;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.3s ease;
 }
 
 .question-nav a.answered {
-	background-color: #4CAF50;
-	color: white;
+    background-color: #4CAF50;
+    color: white;
 }
 
 .question-nav a.unattempted {
-	background-color: #fff;
-	color: #333;
+    background-color: #fff;
+    color: black;
 }
 
 .question-nav a.marked-for-review {
-	background-color: #9C27B0;
-	color: white;
+    background-color: #f5b700 !important;
+    color: white;
 }
 
 .question-nav a:hover {
-	background-color: #e0e0e0;
+    background-color: #e0e0e0;
+}
+#markForReviewButton:hover {
+	background-color: #f5b100;
+}
+button{
+	color: black;
 }
 </style>
 </head>
 <body>
 
-	<div class="container">
-		<div class="question-section">
-			<!-- <h2> Timer: <span id="demo" style="display: inline-block;"></span> </h2> -->
-			<%
-			ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("questions");
-			if (questions != null) {
-			%>
-			<div class="question-item">
-				<h3> Question <span id="questionNumber"></span>: </h3>
-				<p> <span id="questionText"></span> </p>
-				<ul class="options" id="optionsList">
-					<!-- Options will be dynamically populated here -->
-				</ul>
-			</div>
-			<div class="buttons-section" style="text-align: center;">
-				<button id="prevButton" disabled>Previous</button>
-				<button id="nextButton">Next</button>
-				<button id="markForReviewButton">Mark for Review</button>
-				<button id="submitButton" style="display: none;">Submit Test</button>
-			</div>
+	<%
+        HttpSession session2 = request.getSession(false);
+        if (session2 != null && session2.getAttribute("user_id") != null) {
+            //int user_id = (int) session2.getAttribute("user_id");
+            //String name = (String) session2.getAttribute("name");
+    %>
 
-			<%
-			}
-			%>
-		</div>
-		<div class="question-nav">
-			<h2 style="color: white;">Questions</h2>
-			<ul>
-				<%
-				for (int i = 0; i < questions.size(); i++) {
-				%>
-				<li> <a href="#" class="unattempted" data-question-index="<%=i%>"> Question <%=i + 1%> </a> </li>
-				<%
-				}
-				%>
-			</ul>
-		</div>
-		
-	</div>
+    <div class="container">
+        <div class="question-section">
+            <%
+            ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("questions");
+            if (questions != null) {
+            %>
+            <div class="question-item">
+                <h3> Question <span id="questionNumber"></span>: </h3>
+                <p> <span id="questionText"></span> </p>
+                <ul class="options" id="optionsList">
+                    <!-- Options will be dynamically populated here -->
+                </ul>
+            </div>
+            <div class="buttons-section">
+                <button id="prevButton" disabled>Previous</button>
+                <button id="nextButton">Next</button>
+                <button id="markForReviewButton" style="background-color: #f5b700">Mark for Review</button>
+                <button id="submitButton" style="display: none; color: white;">Submit Test</button>
+            </div>
+            <%
+            }
+            %>
+        </div>
+        <div class="question-nav">
+            <h2 style="color: white;">Questions</h2>
+            <ul>
+                <%
+                for (int i = 0; i < questions.size(); i++) {
+                %>
+                <li> <a href="#" class="unattempted" data-question-index="<%=i%>"> Question <%=i + 1%> </a> </li>
+                <%
+                }
+                %>
+            </ul>
+        </div>
+    </div>
 
-	<script>
+<script>
     const questionItems = document.querySelectorAll('.question-item');
     const questionLinks = document.querySelectorAll('.question-nav a');
     const prevButton = document.getElementById('prevButton');
@@ -328,5 +348,9 @@ button:disabled {
         });
     });
 </script>
+
+	<%
+        } else response.sendRedirect("/TakeTest/userPages/userLogin.jsp");
+    %>
 </body>
 </html>

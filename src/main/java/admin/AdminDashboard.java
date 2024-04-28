@@ -30,13 +30,10 @@ public class AdminDashboard extends HttpServlet {
 				ArrayList<Test> arr = TestDao.getAllTests();
 				request.setAttribute("tests", arr);
 				request.getRequestDispatcher("./adminPages/adminDashboard.jsp").forward(request, response);
-				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}else {
-			response.sendRedirect("/TakeTest/adminPages/adminLogin.jsp");
-		}
+		}else response.sendRedirect("/TakeTest/adminPages/adminLogin.jsp");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

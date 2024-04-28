@@ -28,7 +28,6 @@ public class UserDashboard extends HttpServlet {
 			try {
 				ArrayList<Test> arr = TestDao.getAllTests();
 				request.setAttribute("tests", arr);
-//				System.out.print(session.getAttribute("test_id"));
 				request.getRequestDispatcher("./userPages/userDashboard.jsp").forward(request, response);
 				
 			} catch (Exception e) {

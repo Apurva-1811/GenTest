@@ -76,18 +76,22 @@
 </style>
 </head>
 <body>
+    <%
+        HttpSession session2 = request.getSession(false);
+        if (session2 != null && session2.getAttribute("username") != null) {
+    %>
     <div class="container">
         <h1>Add new test</h1>
         <form action="../AddTest" method="post">
-            <label for="test_tag" style="font-size: 15px">Enter Test Tag</label>
+            <label for="test_tag" style="font-size: 14px">Enter Test Tag</label>
             <input type="text" id="test_tag" name="test_tag" placeholder="Test Tag (Max 20 characters)" required maxlength="20">
             
-            <label for="questions" style="font-size: 15px; margin-top: 5px">Enter Number of Questions</label>
+            <label for="questions" style="font-size: 14px; margin-top: 10px">Enter Number of Questions</label>
             <input type="number" id="questions" name="questions" placeholder="Questions (Max 10 ques)" required max="10" min = "">
             
-            <label for="pass_marks" style="font-size: 15px"; margin-top: 5px> Enter Pass Marks</label>
+            <label for="pass_marks" style="font-size: 14px"; margin-top: 10px> Enter Pass Marks</label>
             <input type="number" id="pass_marks" name="pass_marks" min="0" placeholder="Pass marks (considering 1 mark for each question)" required>
-            <button type="submit">Add Test</button>
+            <button type="submit" style="margin-top: 10px;">Add Test</button>
         </form>
         <% 
             String error = request.getParameter("error");
@@ -109,5 +113,9 @@
             window.location.href = '/TakeTest/AdminDashboard';
         }
     </script>
+    
+           <%
+        } else response.sendRedirect("/TakeTest/adminPages/adminLogin.jsp");
+    %>
 </body>
 </html>

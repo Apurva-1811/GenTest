@@ -28,16 +28,10 @@ public class UserRegister extends HttpServlet {
 		String name = request.getParameter("name");
 		
 		try {
-			// check if mobile has 10 digits
-			if(mobile.length() != 10) {
-				response.sendRedirect("/TakeTest/userPages/userRegister.jsp?error=need 10 digits");
+			// if mobile no starts with 0
+			if(mobile.charAt(0) == '0') {
+				response.sendRedirect("/TakeTest/userPages/userRegister.jsp?error=mobile_invalid");
 				return;
-			}
-			for(int i=0; i<10; i++) {
-				if(!Character.isDigit(mobile.charAt(i))) {
-					response.sendRedirect("/TakeTest/userPages/userRegister.jsp?error=mobile invalid");
-					return;
-				}
 			}
 			
 			// check if user with mobile already exists

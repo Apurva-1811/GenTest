@@ -78,9 +78,25 @@
     .hidden {
         display: none;
     }
+    textarea {
+    width: calc(100% - 20px);
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical; /* Allow vertical resizing */
+    min-height: 25px; /* Set a minimum height for the text field */
+}
 </style>
 </head>
 <body>
+
+
+    <%
+        HttpSession session2 = request.getSession(false);
+        if (session2 != null && session2.getAttribute("username") != null) {
+    %>
+
     <div class="container">
         <h2>Add Questions</h2>
         
@@ -104,31 +120,27 @@
             %>
                 <div class="questionForm <%= i == 1 ? "active" : "" %>">
                     <h3>Question <%= i  %></h3>
-                    
                     <label for="question<%= i %>">Question statement:</label>
-                    <input type="text" id="question<%= i %>" name="ques_text<%= i %>" required>
-                    
-                    <label for="option1<%= i %>">Option 1:</label>
-                    <input type="text" id="option1<%= i %>" name="option1<%= i %>" required>
-                    
+					<textarea id="question<%= i %>" name="ques_text<%= i %>" required></textarea>
+					
+					<label for="option1<%= i %>">Option 1:</label>
+					<textarea id="option1<%= i %>" name="option1<%= i %>" required></textarea>
+					
                     <label for="option2<%= i %>">Option 2:</label>
-                    <input type="text" id="option2<%= i %>" name="option2<%= i %>" required>
+                    <textarea id="option2<%= i %>" name="option2<%= i %>" required></textarea>
                     
                     <label for="option3<%= i %>">Option 3:</label>
-                    <input type="text" id="option3<%= i %>" name="option3<%= i %>" required>
+                    <textarea id="option3<%= i %>" name="option3<%= i %>" required></textarea>
                     
                     <label for="option4<%= i %>">Option 4:</label>
-                    <input type="text" id="option4<%= i %>" name="option4<%= i %>" required>
+                    <textarea id="option4<%= i %>" name="option4<%= i %>" required></textarea>
                     
                     <label for="correctAnswer<%= i %>">Correct Answer:</label>
                     <input type="number" id="correctAnswer<%= i %>" name="correctAnswer<%= i %>" required min="1" max="4">
                 </div>
             <% 
                     }
-                } else {
-                    // Handle the case when questions or test_id is null
-                    // For example, display an error message or redirect back to the previous page
-                }
+                } else response.sendRedirect("/TakeTest/error.jsp");
             %>
             <input type ="hidden" name="num_ques" value = <%= questions %>> 
             <input type="hidden" name="testId" value="<%= test_id %>">
@@ -202,7 +214,6 @@
         }
     });
 
-    // Event listener for input fields to hide error message on change
     var formInputs = document.querySelectorAll('.questionForm input[type="text"], .questionForm input[type="number"]');
     formInputs.forEach(function(input) {
         input.addEventListener('input', function() {
@@ -210,14 +221,11 @@
         });
     });
 
-    
-    // Event listener for the Previous button
     prevButton.addEventListener('click', function() {
         currentQuestion--;
         showQuestion();
     });
     
-    // Event listener for form submission
     submitButton.addEventListener('click', function() {
         var inputs = document.querySelectorAll('.questionForm.active input[type="text"], .questionForm.active input[type="number"]');
         var isValid = true;
@@ -226,7 +234,7 @@
                 isValid = false;
             }
         });
-        // Additional validation for correct answer
+        
         var correctAnswerInput = document.getElementById('correctAnswer' + (currentQuestion + 1));
         if (correctAnswerInput) {
             var correctAnswer = parseInt(correctAnswerInput.value);
@@ -239,7 +247,6 @@
             errorMsg.classList.remove('hidden');
         } else {
             errorMsg.classList.add('hidden');
-            // Uncomment the line below to submit the form
              document.getElementById('questionForm').submit();
         }
     });
@@ -256,8 +263,26 @@
     function confirmGoBack() {
         return confirm("Current test will not be added. Are you sure you want to go back?");
     }
+    
+formInputs.forEach(function(input) {
+    if (input.tagName.toLowerCase() === 'textarea') {
+        input.addEventListener('keydown', function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault(); 
+                var cursorPosition = input.selectionStart; 
+                var value = input.value;
+                var newValue = value.substring(0, cursorPosition) + "\n" + value.substring(cursorPosition);
+                input.value = newValue; 
+                input.selectionStart = input.selectionEnd = cursorPosition + 1; 
+            }
+        });
+    }
+});
 </script>
 
+       <%
+        } else response.sendRedirect("/TakeTest/adminPages/adminLogin.jsp");
+    %>
 
 </body>
 </html>

@@ -23,7 +23,6 @@ public class DbConnection implements AutoCloseable {
 	}
 
 	public DbConnection() {
-
 		try {
 			final String url = "jdbc:mysql://localhost:3306/";
 			final String user = "root";

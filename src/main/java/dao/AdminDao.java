@@ -10,7 +10,6 @@ public class AdminDao {
 		String query = "SELECT * FROM admin WHERE username = ? AND password = ?";
 
 		try(DbConnection db = new DbConnection();){
-			
 			db.pstm = db.con.prepareStatement(query);
 			db.pstm.setString(1, username);
 			db.pstm.setString(2, password);

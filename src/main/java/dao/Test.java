@@ -8,7 +8,6 @@ public class Test {
     private int candidates;
     private int pass_marks;
     
-    // pojo: default and parameterised constructor
     public Test() {
 		super();
 	}

@@ -23,14 +23,17 @@ public class EditTest extends HttpServlet {
         super();
     }
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		
 		HttpSession session = request.getSession();
-		if(session != null && session.getAttribute("username") != null) {
+		if(session != null && session.getAttribute("username") != null ) {
 			try {
 				int test_id = Integer.parseInt(request.getParameter("test_id"));
 				ArrayList<Question> arr = TestDao.getAllQuestions(test_id);
+				int passmarks = TestDao.getPassMarks(test_id);
+				session.setAttribute("test_id", test_id);
 				request.setAttribute("questions", arr);
+				request.setAttribute("pass_marks", passmarks);
 				request.getRequestDispatcher("./adminPages/editTest.jsp").forward(request, response);
 				
 			} catch (Exception e) {
@@ -40,5 +43,10 @@ public class EditTest extends HttpServlet {
 			response.sendRedirect("/TakeTest/adminPages/adminLogin.jsp");
 		}
 	}
+	
 
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPost(request, response);
+	}
+	
 }

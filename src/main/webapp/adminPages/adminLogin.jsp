@@ -8,6 +8,39 @@
     <link rel="stylesheet" href="AdminResources/css/owl.carousel.min.css">
     <link rel="stylesheet" href="AdminResources/css/bootstrap.min.css">
     <link rel="stylesheet" href="AdminResources/css/newStyle.css">
+    
+    <style>
+        .btn-link {
+            display: inline-block;
+            padding: 5px 10px;
+            margin-top: 10px;
+            color: white !important;
+            background-color: #333;
+            border: 1px solid #333;
+            border-radius: 5px;
+            text-decoration: none !important;
+        }
+
+        .btn-link:hover {
+            background-color: #f5b700;
+            color:black !important;
+            border: 1px solid #f5b700;
+        }
+
+        .btn-link:focus, .btn-link:hover, .btn-link:active {
+            text-decoration: none;
+            outline: none;
+            border: none;
+        }
+
+        .form-group {
+            margin-bottom: 15px; /* Reduced margin-bottom */
+        }
+
+        .form-group .form-control {
+            height: 30px; /* Reduced height */
+        }
+    </style>
 </head>
 <body>
 
@@ -19,11 +52,11 @@
                 <div class="col-md-7">
                     <h1>Login as <br><strong><span style="color: #F5B700; font-size: 4rem;">Admin</span></strong></h1>
                     <form action="/TakeTest/AdminLogin" method="post" onsubmit="return validateForm()">
-                        <div class="form-group first" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px; margin-bottom: 20px;">
+                        <div class="form-group first" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px; margin-bottom: 15px;">
                             <label for="username"><b>Enter your username</b></label>
                             <input type="text" class="form-control" placeholder="Username " id="username" name="username" required style="border-radius: 5px;">
                         </div>
-                        <div class="form-group last mb-3" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px; margin-bottom: 20px;">
+                        <div class="form-group last mb-3" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px; margin-bottom: 15px;">
                             <label for="password"><b>Enter your password</b></label>
                             <input type="password" class="form-control" placeholder="Password" id="password" name="password" required style="border-radius: 5px;">
                         </div>
@@ -39,6 +72,9 @@
                     <%
                         }
                     %>
+                    <div class="text-center">
+                        <a href="/TakeTest/home.jsp" class="btn-link">Back to Home</a>
+                    </div>
                 </div>
             </div>
         </div>

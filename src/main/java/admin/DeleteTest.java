@@ -21,7 +21,6 @@ public class DeleteTest extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String test_id = request.getParameter("test_id");
 		try {
-			System.out.println("in delete servlet");
 			TestDao.deleteTest(test_id);
 			response.sendRedirect("/TakeTest/AdminDashboard");
 		}catch(Exception e) {

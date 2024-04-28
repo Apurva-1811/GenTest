@@ -28,12 +28,12 @@ public class TestLive extends HttpServlet {
 			try {
 
 				int test_id = Integer.parseInt(request.getParameter("test_id"));
+				String testName = TestDao.getTestName(test_id);
 				session.setAttribute("test_id", test_id);
+				session.setAttribute("test_tag", testName);
 				ArrayList<Question> arr = TestDao.getAllQuestions(test_id);
 				session.setAttribute("questions", arr);
 				response.sendRedirect("./userPages/liveTest.jsp");
-//				request.setAttribute("questions", arr);
-//				request.getRequestDispatcher("./userPages/liveTest.jsp").forward(request, response);
 				
 			} catch (Exception e) {
 				e.printStackTrace();

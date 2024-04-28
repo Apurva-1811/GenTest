@@ -105,6 +105,11 @@
 </head>
 <body> 
 
+    <%
+        HttpSession session2 = request.getSession(false);
+        if (session2 != null && session2.getAttribute("username") != null) {
+    %>
+
 <header>
     <h1>Take<span style="color: #f5b700;">Test</span></h1>
     <div class="header-buttons">
@@ -124,7 +129,6 @@
             <th>Action</th>
         </tr>
         <% 
-            // Assuming 'tests' is the list of Test objects passed from the servlet
             ArrayList<Test> tests = (ArrayList<Test>) request.getAttribute("tests");
             if (tests != null) {
                 int serialNumber = 1;
@@ -138,7 +142,6 @@
                         <td>
                             <button class="btn" onclick="editTest(<%= test.getTestId() %>)">Edit</button>
                             <button class = "logout-btn" id="deleteTestButton" onclick ="deleteTest(<%= test.getTestId() %>)" > Delete </button>
-
                         </td>
                     </tr>
         <%      }
@@ -146,8 +149,6 @@
         %>
     </table>
 </div>
-
-</body>
 
     <script>
     
@@ -183,4 +184,10 @@
     }
     
     </script>
+    
+       <%
+        } else response.sendRedirect("/TakeTest/adminPages/adminLogin.jsp");
+    %>
+    
+    </body>
 </html>

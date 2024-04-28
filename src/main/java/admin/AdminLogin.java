@@ -30,13 +30,11 @@ public class AdminLogin extends HttpServlet {
 		
 		try {
 			if(adminDao.isValidAdmin(username, password)) {
-				System.out.print("logged in successfully");
 				HttpSession session = request.getSession();
 				session.setAttribute("username", username);
 				response.sendRedirect("/TakeTest/AdminDashboard");
 			}else {
 				response.sendRedirect("/TakeTest/adminPages/adminLogin.jsp?error=1");
-				System.out.println("not a valid user");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

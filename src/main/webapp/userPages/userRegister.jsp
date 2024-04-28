@@ -68,17 +68,16 @@
                         String error = request.getParameter("error");
                         String toprint = "";
                         if(error != null){
-                            if(error.equals("need 10 digits")) toprint = "Mobile should have 10 digits.";
-                            if(error.equals("mobile invalid")) toprint = "Invalid mobile number.";
+                            if(error.equals("mobile_invalid")) toprint = "Invalid mobile number.";
                             if(error.equals("user_already_exists")) toprint = "Already registered with this mobile.";
 
                     %>
-                    <p><%= toprint %> Try again</p>
+                    <p style="color: red;"><%= toprint %> Try again</p>
                     <%
                         }
                     %>
                     <div class="text-center">
-                        <a href="/TakeTest/index.html" class="btn-link">Back to Home</a>
+                        <a href="/TakeTest/home.jsp" class="btn-link">Back to Home</a>
                         <a href="/TakeTest/userPages/userLogin.jsp" class="btn-link">Already a User, Login</a>
                     </div>
                 </div>
