@@ -26,9 +26,15 @@ public class AdminDashboard extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		if(session != null && session.getAttribute("username") != null) {
-			try {
+			try {				
 				ArrayList<Test> arr = TestDao.getAllTests();
+				ArrayList<String> allTopics = TestDao.getAllTopics();
+				ArrayList<String> allLang = TestDao.getAllLang();
+				
+				request.setAttribute("allTopics", allTopics);
+				request.setAttribute("allLang", allLang);
 				request.setAttribute("tests", arr);
+				
 				request.getRequestDispatcher("./adminPages/adminDashboard.jsp").forward(request, response);
 			} catch (Exception e) {
 				e.printStackTrace();

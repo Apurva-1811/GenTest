@@ -87,10 +87,25 @@
             <input type="text" id="test_tag" name="test_tag" placeholder="Test Tag (Max 20 characters)" required maxlength="20">
             
             <label for="questions" style="font-size: 14px; margin-top: 10px">Enter Number of Questions</label>
-            <input type="number" id="questions" name="questions" placeholder="Questions (Max 10 ques)" required max="10" min = "">
+            <input type="number" id="questions" name="questions" placeholder="Questions (Max 10 ques)" required max="10" min = "1">
             
-            <label for="pass_marks" style="font-size: 14px"; margin-top: 10px> Enter Pass Marks</label>
+            <label for="pass_marks" style="font-size: 14px; margin-top: 10px"> Enter Pass Marks</label>
             <input type="number" id="pass_marks" name="pass_marks" min="0" placeholder="Pass marks (considering 1 mark for each question)" required>
+            
+            <label for="language" style="font-size: 14px; margin-top: 10px">Enter Language</label>
+			<input type="text" id="lang" name="lang" placeholder="Programming Language (Max 20 characters)" required maxlength="20">
+			
+			<label for="topics" style="font-size: 14px; margin-top: 10px">Enter Topics</label>
+			<input type="text" id="topic" name="topic" placeholder="Topic Name (Max 20 characters)" required maxlength="20">
+			
+			<label for="difficulty" style="font-size: 14px; margin-top: 10px">Select a difficulty</label>
+			<select id="difficulty" name="difficultyLevel" required style="height: 30px"> 
+			    <option value="" selected disabled hidden>None</option>
+			    <option value="easy">Easy</option>
+			    <option value="medium">Medium</option>
+			    <option value="hard">Hard</option>
+			</select>
+			            
             <button type="submit" style="margin-top: 10px;">Add Test</button>
         </form>
         <% 

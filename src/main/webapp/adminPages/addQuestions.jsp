@@ -255,7 +255,7 @@
         item.addEventListener('click', event => {
             const testId = event.target.dataset.testId;
             if (confirmGoBack()) {
-                window.location.href = "/TakeTest/DeleteTest?test_id=" + testId;
+                window.location.href = "/TakeTest/DeleteTest?what=test&test_id=" + testId;
             }
         });
     });

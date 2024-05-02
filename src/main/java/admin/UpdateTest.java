@@ -32,7 +32,12 @@ public class UpdateTest extends HttpServlet {
         	try {
         		int test_id = (int) session.getAttribute("test_id");
         		int passMarks = Integer.parseInt(request.getParameter("pass_marks"));
+        		String topic = (String)request.getParameter("topic");
+        		String lang = (String)request.getParameter("lang");
+        		
         		TestDao.updatePassMarks(test_id, passMarks);
+        		TestDao.updateTestLang(test_id, lang);
+        		TestDao.updateTestTopic(test_id, topic);
         		
         		int numQuestions = Integer.parseInt(request.getParameter("num_ques"));
         		for(int i=1; i<=numQuestions; i++) {

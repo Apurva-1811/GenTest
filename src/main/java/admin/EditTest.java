@@ -29,11 +29,19 @@ public class EditTest extends HttpServlet {
 		if(session != null && session.getAttribute("username") != null ) {
 			try {
 				int test_id = Integer.parseInt(request.getParameter("test_id"));
+				
 				ArrayList<Question> arr = TestDao.getAllQuestions(test_id);
+				session.setAttribute("test_id", test_id);
 				int passmarks = TestDao.getPassMarks(test_id);
+				String topic = TestDao.getTestTopic(test_id);
+				String lang = TestDao.getTestLang(test_id);
+				
 				session.setAttribute("test_id", test_id);
 				request.setAttribute("questions", arr);
 				request.setAttribute("pass_marks", passmarks);
+				request.setAttribute("topic", topic);
+				request.setAttribute("lang", lang);
+				
 				request.getRequestDispatcher("./adminPages/editTest.jsp").forward(request, response);
 				
 			} catch (Exception e) {

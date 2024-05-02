@@ -7,20 +7,10 @@ public class Test {
     private int questions;
     private int candidates;
     private int pass_marks;
+    private String lang;
+    private String topic;
+    private String level;
     
-    public Test() {
-		super();
-	}
-
-	public Test(int test_id, String test_tag, int questions, int candidates, int pass_marks) {
-		super();
-		this.test_id = test_id;
-		this.test_tag = test_tag;
-		this.questions = questions;
-		this.candidates = candidates;
-		this.pass_marks = pass_marks;
-	}
-
 	public int getTestId() { return test_id; }
 	public void setTestId(int id) {this.test_id = id;}
     
@@ -35,5 +25,15 @@ public class Test {
     
     public int getPassMarks() { return pass_marks; }
     public void setPassMarks(int num) {this.pass_marks = num;}
+   
+    public String getLang() { return lang; }
+    public void setLang(String lang) { this.lang = lang; }
+
+	public String getTopic() { return topic; }
+	public void setTopic(String topic) { this.topic = topic; }
+
+	public String getLevel() { return level; }
+	public void setLevel(String level) { this.level = level; }
+	
     
 }

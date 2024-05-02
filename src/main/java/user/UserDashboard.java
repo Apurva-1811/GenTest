@@ -27,6 +27,11 @@ public class UserDashboard extends HttpServlet {
 		if(session != null && session.getAttribute("user_id") != null) {
 			try {
 				ArrayList<Test> arr = TestDao.getAllTests();
+				ArrayList<String> allTopics = TestDao.getAllTopics();
+				ArrayList<String> allLang = TestDao.getAllLang();
+				
+				request.setAttribute("allTopics", allTopics);
+				request.setAttribute("allLang", allLang);
 				request.setAttribute("tests", arr);
 				request.getRequestDispatcher("./userPages/userDashboard.jsp").forward(request, response);
 				

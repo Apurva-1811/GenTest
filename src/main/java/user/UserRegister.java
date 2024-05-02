@@ -40,9 +40,8 @@ public class UserRegister extends HttpServlet {
 				return;
 			}
 			
-			// create new user 
+			// create new user 	
 			if(userDao.addUser(name, mobile, password)) {
-				System.out.println("true value");
 				response.sendRedirect("/TakeTest/userPages/userLogin.jsp");
 			}
 			else response.sendRedirect("/TakeTest/userPages/userRegister.jsp?error=try_again");
