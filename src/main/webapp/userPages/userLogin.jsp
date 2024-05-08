@@ -31,10 +31,14 @@
 
         .form-group {
             margin-bottom: 15px !important; /* Reduced margin-bottom */
+            border-width: 0px !important;
         }
 
         .form-group .form-control {
             height: 30px; /* Reduced height */
+            padding-bottom: 10px !important;
+            border-bottom: solid #f5b700 !important;
+            
         }
 
         .btn-link:focus, .btn-link:hover, .btn-link:active {

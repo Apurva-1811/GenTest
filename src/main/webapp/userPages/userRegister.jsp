@@ -28,7 +28,15 @@
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px !important; /* Reduced margin-bottom */
+            border-width: 0px !important;
+        }
+
+        .form-group .form-control {
+            height: 30px; /* Reduced height */
+            padding-bottom: 10px !important;
+            border-bottom: solid #f5b700 !important;
+            
         }
 
         .btn-link:focus, .btn-link:hover, .btn-link:active {
@@ -47,7 +55,7 @@
             <div class="row align-items-center justify-content-center">
                 <div class="col-md-7">
                     <h1>Register as <br><strong><span style="color: #F5B700; font-size: 4rem;">User</span></strong></h1>
-                    <form action="/TakeTest/UserRegister" method="post" onsubmit="return validateForm()">
+                    <form action="/TakeTest/VerifyUser" method="post" onsubmit="return validateForm()">
                         <div class="form-group first" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;">
                             <label for="name"><b>Enter your username</b></label>
                             <input type="text" class="form-control" placeholder="Username (Max 20 characters)" required id="name" name="name" style="border-radius: 5px;" required maxlength="50">
@@ -60,16 +68,22 @@
                             <label for="password"><b>Enter your password</b></label>
                             <input type="password" class="form-control" placeholder="Password (Min 8 characters with at least 1 number)" required id="password" name="password" style="border-radius: 5px;" required minlength="8" pattern="(?=.*\d).{8,}" title="Password must be at least 8 characters long and contain at least one number">
                         </div>
+                        <div class="form-group" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;">
+                            <label for="email"><b>Enter your email</b></label>
+                            <input type="email" class="form-control" placeholder="Enter email" id="email" name="email" style="border-radius: 5px;" required >
+                        </div>
 
-                        <input type="submit" value="Register" class="btn btn-block btn-warning">
+                        <input type="submit" value="Verify your email" class="btn btn-block btn-warning">
                     </form>
                     <p id="error" style="color: red;"></p>
                     <%
                         String error = request.getParameter("error");
-                        String toprint = "";
+                        String toprint = "Error. Try again.";
                         if(error != null){
                             if(error.equals("mobile_invalid")) toprint = "Invalid mobile number.";
-                            if(error.equals("user_already_exists")) toprint = "Already registered with this mobile.";
+                            else if(error.equals("user_already_exists")) toprint = "Already registered with this mobile.";
+                            else if(error.equals("email_already_exists")) toprint = "Already registered with this email.";
+                            else if(error.equals("wrong_otp")) toprint = "You entered the wrong otp.";
 
                     %>
                     <p style="color: red;"><%= toprint %> Try again</p>

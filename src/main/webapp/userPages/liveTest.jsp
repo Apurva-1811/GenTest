@@ -152,15 +152,77 @@
     #videoElement {
       width: auto;
       height: 100px;
-    }
+    } 
+	
+	#fullscreen-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8); /* White background with transparency */
+}
+
+	#fullscreen-modal {
+		
+		border-color: 5px solid black;
+	    background-color: #f5f5f5; 
+	    padding: 20px;
+	    border-radius: 10px;
+	    width: 100%;
+	    height: 100vh;
+	    text-align: center;
+	    justigy-content: center;
+	}
+	
+	#fullscreen-modal h2 {
+	    color: #333; /* Dark gray text */
+	}
+	
+	#fullscreen-modal p {
+	    color: #666; /* Medium gray text */
+	    margin-bottom: 20px;
+	}
+	
+	#fullscreen-modal .buttons {
+	    display: flex;
+	    justify-content: center;
+	}
+	
+	#fullscreen-modal .buttons button {
+	    padding: 10px 20px;
+	    margin: 0 10px;
+	    border: none;
+	    border-radius: 5px;
+	    cursor: pointer;
+	    transition: background-color 0.3s ease;
+	}
+	
+	#fullscreen-modal .buttons button:hover {
+	    background-color: #f5b700; /* Light orange on hover */
+	}
+	
+	#fullscreen-modal .buttons button#enter-fullscreen-button {
+	    background-color: #4CAF50; /* Green button */
+	    color: #fff; /* White text */
+	}
+	
+	#fullscreen-modal .buttons button#back-button {
+	    background-color: #f44336; /* Red button */
+	    color: #fff; /* White text */
+	}
+    
   </style>
 </head>
 <body>
+
+  <% HttpSession session2 = request.getSession(false);
+  if (session2 != null && session2.getAttribute("user_id") != null) { %>
 	<div id="countdown">
     <span id="minutes">00</span>:<span id="seconds">00</span>
   </div> 
-  <% HttpSession session2 = request.getSession(false);
-  if (session2 != null && session2.getAttribute("user_id") != null) { %>
   <div class="container">
 	  
     <div class="question-section">
@@ -198,23 +260,142 @@
       </ul>
     </div>
   </div>
-  <script>
-    const video = document.getElementById("videoElement");
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      startVideoCapture();
-      async function startVideoCapture() {
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-          video.srcObject = stream;
-        } catch (error) {
-          console.log("Error accessing webcam:", error);
-          window.location.href = "/TakeTest/adminDashboard.jsp";
-        }
-      }
-    } else {
-      console.log("getUserMedia is not supported by this browser");
-    }
 
+  
+  <script>
+  
+
+  // full screen mode --------------------------------------------------------------------------------
+  
+  // no. of times screen changed
+  var count = 0;
+  
+  document.addEventListener("DOMContentLoaded", function() {
+      const fullscreenModal = document.getElementById('fullscreen-modal');
+      const enterFullscreenButton = document.getElementById('enter-fullscreen-button');
+      const backButton = document.getElementById('back-button');
+
+     // fullscreenModal.classList.remove('hidden');
+      fullscreenModal.style.display = "block";
+      
+      enterFullscreenButton.addEventListener('click', () => {
+          enterFullscreen();
+          showQuestion(currentQuestionIndex);
+          if (!startTime) {
+              startTime = Date.now(); // Get the current timestamp
+              startTimer();
+          }
+      });
+
+      backButton.addEventListener('click', () => {
+          window.location.href = "/TakeTest/UserDashboard";
+      });
+      
+      // Function to enter fullscreen mode
+      function enterFullscreen() {
+          if (document.documentElement.requestFullscreen) {
+              document.documentElement.requestFullscreen();
+          } else if (document.documentElement.webkitRequestFullscreen) {
+              document.documentElement.webkitRequestFullscreen();
+          } else if (document.documentElement.mozRequestFullScreen) {
+              document.documentElement.mozRequestFullScreen();
+          }
+          fullscreenModal.style.display = "none";
+      }
+      
+  });
+  
+  let isWindowFocused = true;
+  let switchTimeout;
+
+  function handleWindowBlur() {
+      if (isWindowFocused) {
+          // Window lost focus (switched to another application or tab)
+          isWindowFocused = false;
+          switchTimeout = setTimeout(() => {
+              count++; // Increment the switch count after a delay
+              console.log('Tab switched! Count: ' + count);
+          }, 100); // Adjust the delay as needed
+      }
+  }
+
+  function handleWindowFocus() {
+      if (!isWindowFocused) {
+          // Window regained focus (returned to the application)
+          isWindowFocused = true;
+          if (switchTimeout) {
+              clearTimeout(switchTimeout); // Cancel the switch timeout
+          }
+      }
+  }
+
+  // Listen for window blur and focus events
+  window.addEventListener('blur', handleWindowBlur);
+  window.addEventListener('focus', handleWindowFocus);
+  
+  
+  document.addEventListener('fullscreenchange', (event) => {
+	  
+	  console.log(count);
+	  if (!document.fullscreenElement) {
+		  count++;
+	    const modal = document.getElementById('fullscreen-modal');
+	    if (modal) {
+	      modal.style.display = 'block'; // Show the modal
+	      const abc = document.getElementById('enter-fullscreen-button');
+	      abc.addEventListener('click', () => {
+	          mn();
+	      });
+	      function mn() {
+	          if (document.documentElement.requestFullscreen) {
+	              document.documentElement.requestFullscreen();
+	          } else if (document.documentElement.webkitRequestFullscreen) {
+	              document.documentElement.webkitRequestFullscreen();
+	          } else if (document.documentElement.mozRequestFullScreen) {
+	              document.documentElement.mozRequestFullScreen();
+	          }
+	          fullscreenModal.style.display = "none";
+	      }
+	    } 
+	  }
+	});
+
+
+  // ------ webcam access ------------------------------------------------------------------------------------
+  
+  const video = document.getElementById("videoElement");
+
+  function requestCameraPermission() {
+    
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(function(stream) {
+        // User granted permission
+        startVideoCapture(stream);
+      })
+      .catch(function(error) {
+        console.log("Error accessing webcam:", error);
+        const permissionDenied = confirm("Access to the camera is required. Give access and click 'Ok' to proceed or 'Cancel' to go back to Dashboard.");
+        if (permissionDenied) {
+          // Repeatedly ask for permission until granted
+          requestCameraPermission();
+        } else {
+          window.location.href = "/TakeTest/UserDashboard";
+        }
+      });
+  }
+
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    // Initial request for camera permission
+    requestCameraPermission();
+  } else {
+    console.log("getUserMedia is not supported by this browser");
+  }
+
+  function startVideoCapture(stream) {
+    video.srcObject = stream;
+  }
+  
+  // questions 
     const questionItems = document.querySelectorAll('.question-item');
     const questionLinks = document.querySelectorAll('.question-nav a');
     const prevButton = document.getElementById('prevButton');
@@ -237,7 +418,8 @@
       ]},
       <%}%>
     ];
-
+	
+    var startTime;
     let currentQuestionIndex = 0;
     const userResponses = new Array(questions.length).fill(null);
     const markedForReview = new Array(questions.length).fill(false);
@@ -245,24 +427,6 @@
     const totalTime = questions.length * 1 * 60; // 5 minutes per question, in seconds
     let remainingTime = totalTime;
     let timerInterval;
-    
-    function submitTestOnTimeout() {
-        const confirmSubmit = confirm('Time is up! Do you want to submit the test?');
-        if (confirmSubmit) {
-            clearInterval(timerInterval);
-            const answersString = userResponses.join(',');
-            const form = document.createElement('form');
-            form.setAttribute('method', 'post');
-            form.setAttribute('action', '/TakeTest/Result');
-            const answersInput = document.createElement('input');
-            answersInput.setAttribute('type', 'hidden');
-            answersInput.setAttribute('name', 'answers');
-            answersInput.setAttribute('value', answersString);
-            form.appendChild(answersInput);
-            document.body.appendChild(form);
-            form.submit();
-        }
-    }
 
     function updateTimer() {
         const minutes = Math.floor(remainingTime / 60);
@@ -273,16 +437,12 @@
         document.getElementById('seconds').textContent = secondsText;
 
         if (remainingTime === 30) {
-            // Change background color to red
             document.getElementById('countdown').style.backgroundColor = '#f44336';
         }
-
         if (remainingTime === 0) {
             submitTestOnTimeout();
         } else {
             remainingTime--;
-
-            
         }
     }
 
@@ -290,11 +450,6 @@
       remainingTime = totalTime;
       timerInterval = setInterval(updateTimer, 1000);
     }
-
-    window.onload = function() {
-      showQuestion(currentQuestionIndex);
-      startTimer();
-    };
 
     function showQuestion(index) {
       const question = questions[index];
@@ -348,6 +503,37 @@
       markedForReview[currentIndex] = !markedForReview[currentIndex];
       updateQuestionLink(currentIndex, markedForReview[currentIndex] ? 'marked-for-review' : userResponses[currentIndex] ? 'answered' : 'unattempted');
     }
+    
+    
+    function submitTestOnTimeout() {
+        const confirmSubmit = confirm('Time is up! Submit your test?');
+        if (confirmSubmit) {
+            clearInterval(timerInterval);
+            document.removeEventListener('fullscreenchange', ()=>{
+            	console.log("listener removed");
+            });
+            
+            const answersString = userResponses.join(',');
+            const form = document.createElement('form');
+            form.setAttribute('method', 'post');
+            form.setAttribute('action', '/TakeTest/Result');
+            
+            const answersInput = document.createElement('input');
+            answersInput.setAttribute('type', 'hidden');
+            answersInput.setAttribute('name', 'answers');
+            answersInput.setAttribute('value', answersString);
+            
+            const switches = document.createElement('input');
+            switches.setAttribute('type', 'hidden');
+            switches.setAttribute('name', 'tab_switch');
+            switches.setAttribute('value', count);	
+            
+            form.appendChild(answersInput);
+            form.appendChild(switches);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
 
     function submitTest() {
       const confirmSubmit = confirm('Do you want ... to submit the test?');
@@ -357,12 +543,22 @@
         const form = document.createElement('form');
         form.setAttribute('method', 'post');
         form.setAttribute('action', '/TakeTest/Result');
+        
         const answersInput = document.createElement('input');
         answersInput.setAttribute('type', 'hidden');
         answersInput.setAttribute('name', 'answers');
         answersInput.setAttribute('value', answersString);
+        
+        const switches = document.createElement('input');
+        switches.setAttribute('type', 'hidden');
+        switches.setAttribute('name', 'tab_switch');
+        switches.setAttribute('value', count);
+        
         form.appendChild(answersInput);
-        document.body.appendChild(form);
+        form.appendChild(switches);
+        
+        document.body.appendChild(form);       
+        
         form.submit();
       }
     }
@@ -386,7 +582,18 @@
         showQuestion(currentQuestionIndex);
       });
     });
+    
   </script>
   <% } else response.sendRedirect("/TakeTest/userPages/userLogin.jsp"); %>
+  
+  <!-- Full-screen modal -->
+    <div id="fullscreen-modal" class="modal">
+        <h2>Enter Fullscreen Mode</h2>
+        <p>This test requires fullscreen mode to proceed further. Would you like to enter fullscreen mode?</p>
+        <div class="buttons">
+            <button id="enter-fullscreen-button">Yes</button>
+            <button id="back-button">No (Go Back)</button>
+        </div>
+    </div>
 </body>
 </html>

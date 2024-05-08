@@ -34,11 +34,15 @@
         }
 
         .form-group {
-            margin-bottom: 15px; /* Reduced margin-bottom */
+            margin-bottom: 15px !important; /* Reduced margin-bottom */
+            border-width: 0px !important;
         }
 
         .form-group .form-control {
             height: 30px; /* Reduced height */
+            padding-bottom: 10px !important;
+            border-bottom: solid #f5b700 !important;
+            
         }
     </style>
 </head>

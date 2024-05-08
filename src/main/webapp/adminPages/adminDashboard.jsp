@@ -125,8 +125,8 @@ tr:nth-child(even) {
 			Take<span style="color: #f5b700;">Test</span>
 		</h1>
 		<div class="header-buttons">
-			<a href="/TakeTest/adminPages/addTest.jsp">Add New Test</a> <a
-				href="./Logout" onclick="return confirmLogout();">Logout</a>
+			<a href="/TakeTest/adminPages/addTest.jsp">Add New Test</a> 
+			<a href="./Logout" onclick="return confirmLogout();">Logout</a>
 		</div>
 	</header>
 

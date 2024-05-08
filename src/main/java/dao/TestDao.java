@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.*;
 import database.DbConnection;
 
@@ -140,23 +141,56 @@ public class TestDao {
 		}
 	}
 
-	// ------------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------------
+	
+	public static boolean addResult(int test_id, int user_id, String test_tag, int total, int score, String status,
+			Timestamp dateTime) {
+		
+		String query = "INSERT INTO result (test_id, user_id, test_tag, max_marks, score, status, date) VALUES (?,?,?,?,?,?,?)";
+		try (DbConnection db = new DbConnection()) {
+			db.pstm = db.con.prepareStatement(query);
+			db.pstm.setInt(1, test_id);	
+			db.pstm.setInt(2, user_id);	
+			db.pstm.setString(3, test_tag);
+			db.pstm.setInt(4, total);
+			db.pstm.setInt(5, score);	
+			db.pstm.setString(6, status);
+			db.pstm.setTimestamp(7, dateTime);
+			int count = db.pstm.executeUpdate();
+			return count > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static ArrayList<Result> getResults(int user_id) throws Exception {
+				
+		ArrayList<Result> arr = new ArrayList<>();
+		String query = "SELECT * FROM result where user_id = " + user_id;
 
-	public static int getTestId() throws Exception {
-
-		String query = "SELECT test_id FROM test";
 		try (DbConnection db = new DbConnection()) {
 			db.pstm = db.con.prepareStatement(query);
 			db.rs = db.pstm.executeQuery();
-			int ans = -1;
-			while (db.rs.next())
-				ans = db.rs.getInt("test_id");
-			return ans;
+
+			while (db.rs.next()) {
+				Result result = new Result();
+				result.setTestId(db.rs.getInt("test_id"));
+				result.setUserId(db.rs.getInt("user_id"));
+				result.setTestTag(db.rs.getString("test_tag"));
+				result.setMaxMarks(db.rs.getInt("max_marks"));
+				result.setScore(db.rs.getInt("score"));
+				result.setStatus(db.rs.getString("status"));
+				result.setDate(db.rs.getDate("date"));
+				arr.add(result);
+			}
+			return arr;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return -1;
+			return null;
 		}
 	}
+
 	
 	// ------------------------------------------------------------------------------------------------------
 
@@ -253,6 +287,23 @@ public class TestDao {
 	}
 	
 	// ------------------------------------------------------------------------------------------------------
+	
+
+	public static int getTestId() throws Exception {
+
+		String query = "SELECT test_id FROM test";
+		try (DbConnection db = new DbConnection()) {
+			db.pstm = db.con.prepareStatement(query);
+			db.rs = db.pstm.executeQuery();
+			int ans = -1;
+			while (db.rs.next())
+				ans = db.rs.getInt("test_id");
+			return ans;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
 	
 	public static String getTestName(int test_id) throws Exception {
 		
@@ -444,6 +495,5 @@ public class TestDao {
 		}
 		return ans;
 	}
-
 	
 }

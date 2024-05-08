@@ -125,14 +125,18 @@ tr:nth-child(even) {
 	background-color: rgba(0, 0, 0, 0.4);
 	backdrop-filter: blur(5px);
 	-webkit-backdrop-filter: blur(5px);
+	padding-top: 60px; /* Space for close button */
 }
 
 .modal-content {
 	background-color: #fefefe;
-	margin: 15% auto;
+	margin: 10% auto;
 	padding: 20px;
 	border: 1px solid #888;
 	width: 50%;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0,0,0,0.3); /* Box shadow */
+    max-width: 600px; /* Max width */
 }
 
 .close-button {
@@ -140,6 +144,7 @@ tr:nth-child(even) {
 	float: right;
 	font-size: 28px;
 	font-weight: bold;
+	cursor: pointer;
 }
 
 .close-button:hover, .close-button:focus {
@@ -147,6 +152,13 @@ tr:nth-child(even) {
 	text-decoration: none;
 	cursor: pointer;
 }
+
+#testInstructionsList {
+            margin-bottom: 20px;
+        }
+
+
+
 </style>
 </head>
 <body>
@@ -166,6 +178,8 @@ tr:nth-child(even) {
 			<%=name%>!
 		</h1>
 		<div class="header-buttons">
+		
+			<a href="/TakeTest/UserProfile"> My Profile</a> 
 			<a href="/TakeTest/Logout" onclick="return confirmLogout();"
 				class="logout-btn">Logout</a>
 		</div>
@@ -265,7 +279,7 @@ tr:nth-child(even) {
 	<div id="testInstructionsModal" class="modal">
 		<div class="modal-content">
 			<span class="close-button" onclick="closeTestInstructionsModal()">&times;</span>
-			<h2>Test Instructions</h2>
+			<h2 style="padding-left: 15px;" > Test Instructions</h2>
 			<ul id="testInstructionsList"></ul>
 			<label> <input type="checkbox"
 				id="termsAndConditionsCheckbox"> I have read and agreed with
@@ -276,8 +290,22 @@ tr:nth-child(even) {
 	</div>
 
 	<script>
+
    
-   
+    function generateTestInstructions() {
+        const instructions = [
+            "You must maintain a professional and ethical conduct throughout the test.",
+        	"Avoid any external aids or resources while taking the test to maintain integrity.",
+        	"Double-check your answers before submitting to ensure accuracy.",
+            "Please ensure that you grant access to your webcam for the test.",
+            "You are required to take the test in fullscreen mode.",
+            "Excessive switching between tabs during the test will result in failure.",
+			"Notify the administrator immediately if you encounter any technical issues.",
+			"Double-check your answers before submitting to ensure accuracy.",
+			"Respect the confidentiality and security of the test content."
+        ];
+        return instructions;
+    }   
    
     function showTestInstructions(testId, quesNum) {
 
@@ -301,11 +329,19 @@ tr:nth-child(even) {
         termsCheckbox.addEventListener("change", () => {
             takeTestButton.disabled = !termsCheckbox.checked;
         });
+        
+        document.getElementById("takeTestButton").addEventListener("click", ()=>{
+        	document.requestFullscreen()
+        	.then(()=>{ startTest(testId, quesNum) })
+        	.catch((e) => console.log(e));
+        })
 
-        takeTestButton.addEventListener("click", () => {
+       	takeTestButton.addEventListener("click", () => {
             startTest(testId, quesNum);
         });
     }
+   
+    //-----------------------------------------------------------------------------------
 
     function closeTestInstructionsModal() {
         document.getElementById("testInstructionsModal").style.display = "none";
@@ -315,22 +351,17 @@ tr:nth-child(even) {
         window.location.href = "/TakeTest/TestLive?test_id=" + testId + "&ques_num=" + quesNum;
     }
 
-    function generateTestInstructions() {
-        const instructions = [
-            "The test is designed to assess your knowledge and skills.",
-            "You must maintain a professional and ethical conduct throughout the test.",
-        	"Avoid any external aids or resources while taking the test to maintain fairness and integrity.",
-        	"Upon completion, review your answers and make any necessary adjustments before submission.",
-        	"Double-check your answers before submitting to ensure accuracy.",
-            "The test results will be displayed at the end of the test.",
-            "Respect the confidentiality of the test content and refrain from sharing any information about the questions or answers."
-        ];
-        return instructions.slice(0, 10);
-    }
-
     function confirmLogout() {
         return confirm("Do you want to log out?");
     }
+	
+	document.addEventListener("dblclick", ()=>{
+		document.documentElement.requestFullscreen()
+        .then(() => {
+            console.log("Full-screen mode enabled.");
+        })
+        .catch((e) => console.log("Error enabling full-screen mode:", e));
+	})
 </script>
 
 </body>

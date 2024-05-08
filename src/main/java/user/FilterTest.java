@@ -31,7 +31,7 @@ public class FilterTest extends HttpServlet {
 				String topic = request.getParameter("topicSelect");
 				String level = request.getParameter("DifficultyLevel");
 				
-				if(lang == "all" && topic == "all" && level == "all") {
+				if(lang.equals("all") && topic.equals("all") && level.equals("all")) {
 					if(person == "user") response.sendRedirect("/TakeTest/UserDashboard");
 					if(person == "admin") response.sendRedirect("/TakeTest/AdminDashboard");
 				}

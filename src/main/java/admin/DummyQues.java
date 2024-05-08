@@ -21,7 +21,6 @@ public class DummyQues extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		int test_id = Integer.parseInt(request.getParameter("test_id"));
-		System.out.println(test_id);
 		TestDao.addDummyQues(test_id);
 		response.sendRedirect("/TakeTest/EditTest?test_id="+test_id);
 	}

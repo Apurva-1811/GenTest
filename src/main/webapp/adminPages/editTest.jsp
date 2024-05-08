@@ -210,9 +210,23 @@
 
     <script>
     
-        function redirectToDashboard() {
+    function isAnyInputEmpty() {
+        var inputs = document.querySelectorAll('input');
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].value.trim() === '') {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    function redirectToDashboard() {
+        if (isAnyInputEmpty()) {
+            alert("Please fill in all the required fields before going back to the dashboard.");
+        } else {
             window.location.href = '/TakeTest/AdminDashboard';
         }
+    }
        
         function deleteQues(quesId) {
             var confirmDelete = confirm("Are you sure you want to delete this question?");
