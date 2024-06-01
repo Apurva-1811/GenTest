@@ -24,10 +24,10 @@ public class DbConnection implements AutoCloseable {
 
 	public DbConnection() {
 		try {
-			final String url = "jdbc:mysql://localhost:3306/";
-			final String user = "root";
-			final String password = "rootsql@10";
-			con = DriverManager.getConnection(url + "taketest", user, password);
+			final String url = "";
+			final String user = "" ;
+			final String password = "";
+			con = DriverManager.getConnection(url, user, password);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
