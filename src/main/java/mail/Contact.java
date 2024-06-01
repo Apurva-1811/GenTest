@@ -22,7 +22,7 @@ public class Contact extends HttpServlet {
 		if(request.getParameter("name") != null) {
 			
 			String subject = "New message from Contact Form";
-			String to = "pallvi4824.be21@chitkara.edu.in";
+			String to = "";
 			String msg = "Dear Admin, \n"
 					+ "You have received a new message from the contact form on your website. Here are the details:\n\n"
 					+ "Name: " + request.getParameter("name") + "\n"
