@@ -13,8 +13,8 @@ public class SendMail {
 	
 	public boolean send(String subject, String text, String to) {
 		
-		final String from = "whyiamanonymous0@gmail.com";
-		final String password = "yjjhjbklpjjbazaw";
+		final String from = "";
+		final String password = "";
 		
 		Properties props = new Properties();
         props.put("mail.transport.protocol", "smtps");
